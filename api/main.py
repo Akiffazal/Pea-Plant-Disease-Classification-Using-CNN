@@ -92,7 +92,7 @@ MODEL.compile(
     metrics=['accuracy']
 )
 
-CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]
+CLASS_NAMES = ['DOWNY_MILDEW_LEAF', 'FRESH_LEAF', 'LEAFMINNER_LEAF', 'POWDER_MILDEW_LEAF']
 
 @app.get("/ping")
 async def ping():
