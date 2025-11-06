@@ -1,1 +1,1 @@
-MODEL_PATH = "saved_models/1/potatoes.h5"
+MODEL = tf.keras.models.load_model("../saved_models/pea_model.h5")

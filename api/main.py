@@ -97,8 +97,11 @@ CLASS_NAMES = ['DOWNY_MILDEW_LEAF', 'FRESH_LEAF', 'LEAFMINNER_LEAF', 'POWDER_MIL
 
 @app.get("/ping")
 async def ping():
-    return {"message": "Hello, I am alive"}
+    return "Hello, I am alive"
 
+def read_file_as_image(data) -> np.ndarray:
+    image = np.array(Image.open(BytesIO(data)))
+    return image
 # Utility to convert uploaded image to model input format
 def read_file_as_image(data: bytes) -> np.ndarray:
     image = Image.open(BytesIO(data)).convert("RGB")
@@ -107,8 +110,12 @@ def read_file_as_image(data: bytes) -> np.ndarray:
     return image_array
 
 @app.post("/predict")
-async def predict(file: UploadFile = File(...)):
+async def predict(
+    file: UploadFile = File(...)
+):
     image = read_file_as_image(await file.read())
+    img_batch = np.expand_dims(image, 0)
+    
     img_batch = np.expand_dims(image, axis=0)  # Add batch dimension
 
     predictions = MODEL.predict(img_batch)
@@ -116,10 +123,18 @@ async def predict(file: UploadFile = File(...)):
     predicted_class = CLASS_NAMES[predicted_index]
     confidence = float(np.max(predictions[0]))
 
+    predicted_class = CLASS_NAMES[np.argmax(predictions[0])]
+    confidence = np.max(predictions[0])
     return {
+        'class': predicted_class,
+        'confidence': float(confidence)
         "class": predicted_class,
         "confidence": round(confidence, 4)
     }
 
 if __name__ == "__main__":
+    uvicorn.run(app, host='localhost', port=8000)
+
+
+
     uvicorn.run(app, host="127.0.0.1", port=8000)
