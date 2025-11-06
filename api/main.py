@@ -55,6 +55,7 @@
 
 
 
+
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
@@ -65,57 +66,59 @@ import tensorflow as tf
 
 app = FastAPI()
 
+# Enable CORS for frontend interaction
 origins = [
     "http://localhost",
-    "http://localhost:3000",
+    "http://localhost:3000"
 ]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"]
 )
 
 
-# MODEL_PATH = "saved_models/1/potatoes.h5"
-MODEL_PATH = "../saved_models/pea_model.h5"
-
-# Load the model WITHOUT compiling to avoid legacy loss config errors
+# Load your trained model
+MODEL_PATH = r"C:\Users\lenovo\Desktop\Pea-Plant-Disease-Classification\saved_models\pea_model.h5"
 MODEL = tf.keras.models.load_model(MODEL_PATH, compile=False)
 
-# Compile the model manually with supported loss and optimizer
+# Compile the model manually to avoid legacy issues
 MODEL.compile(
     optimizer=tf.keras.optimizers.Adam(),
-    loss=tf.keras.losses.CategoricalCrossentropy(from_logits=False, reduction='sum_over_batch_size'),
+    loss=tf.keras.losses.CategoricalCrossentropy(from_logits=False),
     metrics=['accuracy']
 )
 
 CLASS_NAMES = ['DOWNY_MILDEW_LEAF', 'FRESH_LEAF', 'LEAFMINNER_LEAF', 'POWDER_MILDEW_LEAF']
 
+    
+
 @app.get("/ping")
 async def ping():
     return {"message": "Hello, I am alive"}
 
+# Utility to convert uploaded image to model input format
 def read_file_as_image(data: bytes) -> np.ndarray:
     image = Image.open(BytesIO(data)).convert("RGB")
-    image = image.resize((256, 256))  # Match your model input size
-    return np.array(image)
+    image = image.resize((256, 256))  # Match input shape expected by model
+    image_array = np.array(image) / 255.0  # Normalize pixel values
+    return image_array
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
     image = read_file_as_image(await file.read())
-    img_batch = np.expand_dims(image, axis=0) / 255.0  # Normalize
+    img_batch = np.expand_dims(image, axis=0)  # Add batch dimension
 
     predictions = MODEL.predict(img_batch)
-    predicted_index = np.argmax(predictions[0])
+    predicted_index = int(np.argmax(predictions[0]))
     predicted_class = CLASS_NAMES[predicted_index]
     confidence = float(np.max(predictions[0]))
 
     return {
         "class": predicted_class,
-        "confidence": confidence
+        "confidence": round(confidence, 4)
     }
 
 if __name__ == "__main__":
