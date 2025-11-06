@@ -20,7 +20,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-MODEL = tf.keras.models.load_model("../saved_models/pea_model.h5")
+
+# MODEL_PATH = "saved_models/1/potatoes.h5"
+MODEL_PATH = "../saved_models/pea_model.h5"
+
+# Load the model WITHOUT compiling to avoid legacy loss config errors
+MODEL = tf.keras.models.load_model(MODEL_PATH, compile=False)
+
+# Compile the model manually with supported loss and optimizer
+MODEL.compile(
+    optimizer=tf.keras.optimizers.Adam(),
+    loss=tf.keras.losses.CategoricalCrossentropy(from_logits=False, reduction='sum_over_batch_size'),
+    metrics=['accuracy']
+)
 
 CLASS_NAMES = ['DOWNY_MILDEW_LEAF', 'FRESH_LEAF', 'LEAFMINNER_LEAF', 'POWDER_MILDEW_LEAF']
 
