@@ -86,9 +86,6 @@ app.add_middleware(
 MODEL = tf.saved_model.load("E:/Pea_Plant_disease/saved_models/2")
 infer = MODEL.signatures["serving_default"]
 
-
->>>>>>>>> Temporary merge branch 2
-
 CLASS_NAMES = ['DOWNY_MILDEW_LEAF', 'FRESH_LEAF', 'LEAFMINNER_LEAF', 'POWDER_MILDEW_LEAF']
 
 
