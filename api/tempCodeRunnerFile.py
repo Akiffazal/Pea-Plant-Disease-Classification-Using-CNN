@@ -1,1 +1,0 @@
-MODEL = tf.keras.models.load_model("../saved_models/pea_model.h5")
