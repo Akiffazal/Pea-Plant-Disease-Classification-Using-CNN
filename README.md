@@ -2,7 +2,7 @@
 
 ## 📄 Project Description
 
-This project uses a Convolutional Neural Network (CNN) to classify pea plant leaves into four categories. Given an image of a pea leaf, the model predicts its health status — helping automate disease detection for better crop management.
+This project uses a Convolutional Neural Network (CNN) to classify pea plant leaves into four categories. Given an image of a pea leaf, the model predicts its health status — helping automate disease detection for better crop management. The model achieves **95% accuracy** on the validation dataset.
 
 ## 🧠 Motivation
 
@@ -12,15 +12,15 @@ This project uses a Convolutional Neural Network (CNN) to classify pea plant lea
 
 ## 🗂 Dataset
 
-* **Custom dataset collected personally**: All leaf images were collected and labeled manually to ensure data quality.
-* The dataset includes four classes:
+* **Custom dataset collected manually**: All leaf images were collected and labeled personally to ensure data quality.
+* Dataset classes:
 
   1. **DOWNY_MILDEW_LEAF** – Leaf affected by downy mildew
   2. **FRESH_LEAF** – Healthy, fresh leaf
   3. **LEAFMINER_LEAF** – Leaf affected by leafminer infestation
   4. **POWDER_MILDEW_LEAF** – Leaf affected by powdery mildew
 
-> Dataset is organized in the following structure:
+> Dataset structure:
 
 ```
 pea_plant_dataset/
@@ -32,10 +32,10 @@ pea_plant_dataset/
 
 ## ✅ Features
 
-* CNN model trained on the custom pea leaf dataset.
-* Data preprocessing (resizing, normalization) and augmentation to improve performance.
-* Training and validation pipeline included.
-* Trained model ready for inference on new leaf images.
+* CNN trained on the custom pea leaf dataset.
+* Data preprocessing (resizing, normalization) and augmentation applied.
+* Achieved **95% accuracy** on the validation set.
+* Ready-to-use trained model for inference on new images.
 
 ## 📁 Repository Structure
 
@@ -94,6 +94,7 @@ print(f"Predicted Class: {predicted_class}")
 
 * CNN architecture with convolutional, pooling, and dense layers.
 * Data preprocessing and optional augmentation for better generalization.
+* Achieved **95% validation accuracy**.
 * Dataset split into training and validation sets for evaluation.
 
 ## 🤝 Contributions & Future Work
@@ -106,4 +107,3 @@ print(f"Predicted Class: {predicted_class}")
 ## 📜 License
 
 Open-source. Use, modify, or extend freely.
-
