@@ -71,24 +71,6 @@ pip install -r requirements.txt
 4. Run training scripts/notebooks in `training/` to train the CNN.
 5. Trained model weights will be saved in `saved_models/`.
 
-## 🚀 Usage Example
-
-```python
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import image
-import numpy as np
-
-CLASS_NAMES = ['DOWNY_MILDEW_LEAF', 'FRESH_LEAF', 'LEAFMINER_LEAF', 'POWDER_MILDEW_LEAF']
-
-model = load_model('saved_models/your_model.h5')
-img = image.load_img('path_to_leaf_image.jpg', target_size=(IMG_HEIGHT, IMG_WIDTH))
-img_array = image.img_to_array(img) / 255.0
-img_array = np.expand_dims(img_array, axis=0)
-
-prediction = model.predict(img_array)
-predicted_class = CLASS_NAMES[np.argmax(prediction)]
-print(f"Predicted Class: {predicted_class}")
-```
 
 ## 📊 Model & Training Details
 
